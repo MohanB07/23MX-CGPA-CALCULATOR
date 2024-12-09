@@ -11,24 +11,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const isSGPA = mode === 'sgpa';
     const semesterCards = document.querySelectorAll('.semester-card');
     const proceedBtn = document.querySelector('.proceed-btn');
-    let selectedSemesters = new Set();
+    const selectedSemesters = new Set();
 
+    // Add click event listeners to semester cards
     semesterCards.forEach(card => {
-        card.addEventListener('click', () => {
-            if (isSGPA) {
-                // SGPA mode: only one selection allowed
-                semesterCards.forEach(c => c.classList.remove('selected'));
-                card.classList.add('selected');
-                selectedSemesters.clear();
-                selectedSemesters.add(card.dataset.semester);
+        card.addEventListener('click', function() {
+            const semesterNumber = this.getAttribute('data-semester');
+            
+            // Toggle selection
+            if (selectedSemesters.has(semesterNumber)) {
+                // Unselect the card
+                selectedSemesters.delete(semesterNumber);
+                this.classList.remove('selected');
             } else {
-                // CGPA mode: multiple selections allowed
-                card.classList.toggle('selected');
-                if (card.classList.contains('selected')) {
-                    selectedSemesters.add(card.dataset.semester);
-                } else {
-                    selectedSemesters.delete(card.dataset.semester);
+                // For SGPA, clear previous selection
+                if (isSGPA && selectedSemesters.size > 0) {
+                    selectedSemesters.clear();
+                    semesterCards.forEach(c => c.classList.remove('selected'));
                 }
+                
+                // Select the card
+                selectedSemesters.add(semesterNumber);
+                this.classList.add('selected');
             }
 
             // Enable/disable proceed button based on selection
