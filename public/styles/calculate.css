@@ -7,6 +7,42 @@
     margin: 0 auto;
 }
 
+.back-btn {
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 500;
+    padding: 0.5rem 1.5rem;
+    border: 1px solid var(--primary-color);
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 100;
+}
+
+.back-btn:hover {
+    background: var(--primary-color);
+    -webkit-background-clip: initial;
+    background-clip: initial;
+    color: var(--background);
+    box-shadow: var(--neon-glow);
+}
+
+.back-arrow {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
 .title {
     text-align: center;
     background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
@@ -131,75 +167,21 @@
     box-shadow: var(--neon-glow);
 }
 
-.btn-glow {
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(0, 255, 136, 0.2) 0%, transparent 70%);
-    transform: translate(-100%, -100%);
-    transition: transform 0.6s ease;
-}
-
-.calculate-btn:hover .btn-glow {
-    transform: translate(0, 0);
-}
-
-.back-btn {
-    position: fixed;
-    top: 2rem;
-    left: 2rem;
-    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-decoration: none;
-    font-size: 1.2rem;
-    font-weight: 500;
-    padding: 0.5rem 1.5rem;
-    border: 1px solid var(--primary-color);
-    border-radius: 25px;
-    transition: all 0.3s ease;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    z-index: 100;
-}
-
-.back-btn:hover {
-    background: var(--primary-color);
-    -webkit-background-clip: initial;
-    background-clip: initial;
-    color: var(--background);
-    box-shadow: var(--neon-glow);
-}
-
-.back-arrow {
-    font-size: 1.5rem;
-    line-height: 1;
-}
-
+/* Results Container Styles */
 .results-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    display: flex;
+    display: none;
     justify-content: center;
     align-items: center;
     z-index: 1000;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.5s ease;
 }
 
 .results-container.show {
-    opacity: 1;
-    visibility: visible;
+    display: flex;
 }
 
 .results-overlay {
@@ -249,17 +231,20 @@
     letter-spacing: 2px;
 }
 
+/* Previous styles remain the same until results-actions */
+
 .results-actions {
     display: flex;
     align-items: center;
     gap: 1.5rem;
 }
 
+/* Updated Download PDF Button Styles */
 .download-pdf {
     background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
     border: none;
     border-radius: 20px;
-    padding: 0.5rem 1.5rem;
+    padding: 0.8rem 1.8rem;
     color: var(--background);
     font-family: 'Orbitron', sans-serif;
     font-size: 0.9rem;
@@ -267,12 +252,45 @@
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 255, 136, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.download-pdf::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: 0.5s;
 }
 
 .download-pdf:hover {
     transform: scale(1.05);
-    box-shadow: var(--neon-glow);
+    box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
 }
+
+.download-pdf:hover::before {
+    left: 100%;
+}
+
+.download-pdf:active {
+    transform: scale(0.98);
+}
+
+/* Rest of your existing styles remain the same */
+
 
 .close-results {
     font-size: 2rem;
@@ -286,20 +304,25 @@
     text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
 }
 
+.results-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
 .semester-results {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
-    margin-bottom: 2rem;
 }
 
 .semester-result-card {
-    background: rgba(255, 255, 255, 0.05);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
     border-radius: 15px;
+    border: 1px solid rgba(0, 255, 136, 0.15);
     padding: 1.5rem;
     text-align: center;
-    border: 1px solid rgba(0, 255, 136, 0.1);
-    animation: resultCardAppear 0.5s ease forwards;
+    animation: cardFadeIn 0.5s ease forwards;
     opacity: 0;
 }
 
@@ -307,42 +330,175 @@
     color: var(--primary-color);
     font-size: 1.2rem;
     margin-bottom: 1rem;
+    letter-spacing: 1px;
 }
 
 .gpa-value {
     font-size: 2.5rem;
+    font-weight: 700;
     background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    margin: 0.5rem 0;
-    animation: numberCountUp 2s ease-out forwards;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
 }
 
 .final-result {
     text-align: center;
     padding: 2rem;
     border-top: 1px solid rgba(0, 255, 136, 0.2);
-    animation: finalResultAppear 1s ease forwards;
+    margin-top: 1rem;
 }
 
 .final-result h3 {
     color: var(--primary-color);
     font-size: 1.5rem;
     margin-bottom: 1rem;
+    letter-spacing: 2px;
 }
 
 .final-gpa {
     font-size: 3.5rem;
+    font-weight: 900;
     background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    margin: 1rem 0;
-    animation: numberCountUp 2s ease-out forwards;
+    text-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
+    animation: gpaPulse 2s infinite;
 }
 
-@keyframes resultCardAppear {
+/* User Details Modal Styles */
+.user-details-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1100;
+}
+
+.user-details-modal.show {
+    display: flex;
+}
+
+.modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 500px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    padding: 2rem;
+    transform: translateY(30px);
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+.user-details-modal.show .modal-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+}
+
+.modal-header h3 {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+}
+
+.close-modal {
+    font-size: 2rem;
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.close-modal:hover {
+    transform: scale(1.1);
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+.user-details-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+
+.form-group input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+    border-radius: 8px;
+    color: var(--primary-color);
+    padding: 0.8rem;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+}
+
+.form-group input[readonly] {
+    background: rgba(255, 255, 255, 0.05);
+    cursor: not-allowed;
+}
+
+.submit-btn {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    border: none;
+    border-radius: 25px;
+    color: var(--background);
+    padding: 1rem;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+}
+
+.submit-btn:hover {
+    transform: scale(1.05);
+    box-shadow: var(--neon-glow);
+}
+
+/* Animations */
+@keyframes cardFadeIn {
     from {
         opacity: 0;
         transform: translateY(20px);
@@ -353,40 +509,19 @@
     }
 }
 
-@keyframes finalResultAppear {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
+@keyframes gpaPulse {
+    0% {
+        text-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
     }
-    to {
-        opacity: 1;
-        transform: scale(1);
+    50% {
+        text-shadow: 0 0 25px rgba(0, 255, 136, 0.6);
     }
-}
-
-@keyframes numberCountUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
+    100% {
+        text-shadow: 0 0 15px rgba(0, 255, 136, 0.4);
     }
 }
 
-@keyframes sectionFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Mobile Responsive Design */
+/* Mobile Responsive Styles */
 @media (max-width: 768px) {
     .calculator-container {
         padding: 80px 1rem 2rem;
@@ -394,14 +529,6 @@
 
     .title {
         font-size: 1.8rem;
-    }
-
-    .semester-section {
-        padding: 1rem;
-    }
-
-    .semester-title {
-        font-size: 1.4rem;
     }
 
     .courses-grid {
@@ -423,43 +550,16 @@
         margin-bottom: 0.5rem;
     }
 
-    .course-code::before {
-        content: 'Code: ';
-        opacity: 0.7;
-    }
-
-    .course-name::before {
-        content: 'Name: ';
-        opacity: 0.7;
-    }
-
-    .course-credits::before {
-        content: 'Credits: ';
-        opacity: 0.7;
-    }
-
-    .grade-input {
-        width: 100%;
-    }
-
-    .calculate-btn {
-        padding: 0.8rem 2rem;
-        font-size: 1rem;
-    }
-
-    .back-btn {
-        top: 1rem;
-        left: 1rem;
-        font-size: 1rem;
-        padding: 0.4rem 1rem;
-    }
-
     .results-content {
-        padding: 1rem;
+        padding: 1.5rem;
     }
 
     .results-header h2 {
         font-size: 1.5rem;
+    }
+
+    .semester-results {
+        grid-template-columns: 1fr;
     }
 
     .semester-result-card {
@@ -470,16 +570,37 @@
         font-size: 2rem;
     }
 
+    .final-result {
+        padding: 1.5rem;
+    }
+
     .final-gpa {
         font-size: 2.5rem;
+    }
+
+    .download-pdf {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.8rem;
     }
 
     .results-actions {
         gap: 1rem;
     }
 
-    .download-pdf {
-        padding: 0.4rem 1rem;
-        font-size: 0.8rem;
+    .modal-content {
+        padding: 1.5rem;
+    }
+
+    .modal-header h3 {
+        font-size: 1.2rem;
+    }
+
+    .form-group input {
+        padding: 0.6rem;
+    }
+
+    .submit-btn {
+        padding: 0.8rem;
+        font-size: 0.9rem;
     }
 } 

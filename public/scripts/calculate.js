@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
             { code: '23MX16', name: 'LAB : C programming', credits: 2 },
 	        { code: '23MX17', name: 'LAB : Data Structures', credits: 2 },
 	        { code: '23MX18', name: 'Web Application Development', credits: 2 },
-
         ],
         2: [
             { code: '23MX21', name: 'Software Engineering', credits: 4 },
@@ -32,8 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
             { code: '23MX24', name: 'Enterprise Computing using Full Stack', credits: 5 },
             { code: '23MX_', name: 'Elective 1', credits: 3 },
             { code: '23MX26', name: 'LAB : Java programming', credits: 2 },
-            { code: '23MX27', name: 'Mobile Application Development', credits: 2 },
-            { code: '23MX28', name: 'Professional Communication and Personality Development', credits: 1 },
+	        { code: '23MX27', name: 'Mobile Application Development', credits: 2 },
+	        { code: '23MX28', name: 'Professional Communication and Personality Development', credits: 1 },
 
         ],
         3: [
@@ -181,7 +180,17 @@ function displayResults(results, cgpa) {
     resultsContainer.classList.add('show');
 }
 
-function generatePDF(results, cgpa) {
+function showUserDetailsModal() {
+    const modal = document.querySelector('.user-details-modal');
+    modal.classList.add('show');
+}
+
+function hideUserDetailsModal() {
+    const modal = document.querySelector('.user-details-modal');
+    modal.classList.remove('show');
+}
+
+function generatePDFWithUserDetails(results, cgpa, userDetails) {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
 
@@ -200,14 +209,21 @@ function generatePDF(results, cgpa) {
     doc.setTextColor(0, 255, 136);
     doc.text('23MX GPA Calculator Results', 105, 20, { align: 'center' });
 
+    // Add student details
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`Name: ${userDetails.name}`, 14, 40);
+    doc.text(`Register No: ${userDetails.regNo}`, 14, 48);
+    doc.text(`Department: ${userDetails.department}`, 14, 56);
+
     // Add date
     doc.setFontSize(10);
     doc.setTextColor(128, 128, 128);
     const date = new Date().toLocaleDateString();
-    doc.text(`Generated on: ${date}`, 105, 30, { align: 'center' });
+    doc.text(`Generated on: ${date}`, 196, 40, { align: 'right' });
 
     // Add course details for each semester
-    let yPos = 50;
+    let yPos = 70;
     const semesterSections = document.querySelectorAll('.semester-section');
     
     semesterSections.forEach((section, index) => {
@@ -291,6 +307,17 @@ document.querySelector('.close-results').addEventListener('click', () => {
 });
 document.querySelector('.download-pdf').addEventListener('click', () => {
     if (lastResults && lastCGPA) {
-        generatePDF(lastResults, lastCGPA);
+        showUserDetailsModal();
     }
+});
+document.querySelector('.close-modal').addEventListener('click', hideUserDetailsModal);
+document.getElementById('userDetailsForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const userDetails = {
+        name: document.getElementById('studentName').value,
+        regNo: document.getElementById('regNo').value,
+        department: document.getElementById('department').value
+    };
+    hideUserDetailsModal();
+    generatePDFWithUserDetails(lastResults, lastCGPA, userDetails);
 }); 
