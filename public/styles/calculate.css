@@ -182,7 +182,164 @@
     line-height: 1;
 }
 
-@keyframes sectionFadeIn {
+.results-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s ease;
+}
+
+.results-container.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.results-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.results-content {
+    position: relative;
+    width: 90%;
+    max-width: 800px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    padding: 2rem;
+    transform: translateY(30px);
+    opacity: 0;
+    transition: all 0.5s ease;
+}
+
+.results-container.show .results-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+}
+
+.results-header h2 {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 2rem;
+    letter-spacing: 2px;
+}
+
+.close-results {
+    font-size: 2rem;
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.close-results:hover {
+    transform: scale(1.1);
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+.semester-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.semester-result-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 15px;
+    padding: 1.5rem;
+    text-align: center;
+    border: 1px solid rgba(0, 255, 136, 0.1);
+    animation: resultCardAppear 0.5s ease forwards;
+    opacity: 0;
+}
+
+.semester-result-card h3 {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.gpa-value {
+    font-size: 2.5rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin: 0.5rem 0;
+    animation: numberCountUp 2s ease-out forwards;
+}
+
+.final-result {
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid rgba(0, 255, 136, 0.2);
+    animation: finalResultAppear 1s ease forwards;
+}
+
+.final-result h3 {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.final-gpa {
+    font-size: 3.5rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin: 1rem 0;
+    animation: numberCountUp 2s ease-out forwards;
+}
+
+@keyframes resultCardAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes finalResultAppear {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes numberCountUp {
     from {
         opacity: 0;
         transform: translateY(20px);
@@ -259,5 +416,25 @@
         left: 1rem;
         font-size: 1rem;
         padding: 0.4rem 1rem;
+    }
+
+    .results-content {
+        padding: 1rem;
+    }
+
+    .results-header h2 {
+        font-size: 1.5rem;
+    }
+
+    .semester-result-card {
+        padding: 1rem;
+    }
+
+    .gpa-value {
+        font-size: 2rem;
+    }
+
+    .final-gpa {
+        font-size: 2.5rem;
     }
 } 

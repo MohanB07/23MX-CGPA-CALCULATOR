@@ -21,8 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
             { code: '23MX14', name: 'Database Systems', credits: 4 },
             { code: '23MX15', name: 'Web Technologies', credits: 3 },
             { code: '23MX16', name: 'LAB : C programming', credits: 2 },
-	        { code: '23MX17', name: 'LAB : Data Structures', credits: 2 },
-	        { code: '23MX18', name: 'Web Application Development', credits: 2 },
+	    { code: '23MX17', name: 'LAB : Data Structures', credits: 2 },
+	    { code: '23MX18', name: 'Web Application Development', credits: 2 },
 
         ],
         2: [
@@ -32,24 +32,24 @@ document.addEventListener('DOMContentLoaded', () => {
             { code: '23MX24', name: 'Enterprise Computing using Full Stack', credits: 5 },
             { code: '23MX_', name: 'Elective 1', credits: 3 },
             { code: '23MX26', name: 'LAB : Java programming', credits: 2 },
-	        { code: '23MX27', name: 'Mobile Application Development', credits: 2 },
-	        { code: '23MX28', name: 'Professional Communication and Personality Development', credits: 1 },
+            { code: '23MX27', name: 'Mobile Application Development', credits: 2 },
+            { code: '23MX28', name: 'Professional Communication and Personality Development', credits: 1 },
 
         ],
-        3: [
+3: [
             { code: '23MX31', name: 'Cloud Computing', credits: 3 },
             { code: '23MX_', name: 'Elective 2', credits: 3 },
             { code: '23MX_', name: 'Elective 3', credits: 3 },
             { code: '23MX_', name: 'Elective 4', credits: 3 },
             { code: '23MX_', name: 'Elective 5', credits: 3 },
             { code: '23MX36', name: 'LAB : Cloud Computing', credits: 2 },
-	        { code: '23MX37', name: 'Mini Project', credits: 4 },
-	        { code: '23MXM_', name: 'Audit Course', credits: 0 },
+            { code: '23MX37', name: 'Mini Project', credits: 4 },
+            { code: '23MXM_', name: 'Audit Course', credits: 0 },
 
         ],
         4: [
             { code: '23MX41', name: 'Project Work', credits: 12}
-        ],
+        ]
         // Add more semesters as needed
     };
 
@@ -108,4 +108,74 @@ function createSemesterSection(semesterNum, courses) {
     section.appendChild(header);
     section.appendChild(coursesGrid);
     return section;
-} 
+}
+
+function calculateResults() {
+    const semesterSections = document.querySelectorAll('.semester-section');
+    const results = [];
+    let totalCredits = 0;
+    let totalPoints = 0;
+
+    semesterSections.forEach(section => {
+        const semesterNum = section.querySelector('.semester-title').textContent.split(' ')[1];
+        const courses = section.querySelectorAll('.course-row');
+        let semesterCredits = 0;
+        let semesterPoints = 0;
+
+        courses.forEach(course => {
+            const credits = parseFloat(course.querySelector('.course-credits').textContent);
+            const grade = parseFloat(course.querySelector('.grade-input').value);
+            semesterCredits += credits;
+            semesterPoints += credits * grade;
+        });
+
+        const semesterGPA = semesterPoints / semesterCredits;
+        results.push({
+            semester: semesterNum,
+            gpa: semesterGPA.toFixed(3)
+        });
+
+        totalCredits += semesterCredits;
+        totalPoints += semesterPoints;
+    });
+
+    const cgpa = (totalPoints / totalCredits).toFixed(3);
+    displayResults(results, cgpa);
+}
+
+function displayResults(results, cgpa) {
+    const resultsContainer = document.querySelector('.results-container');
+    const semesterResults = document.querySelector('.semester-results');
+    const finalResult = document.querySelector('.final-result');
+
+    // Clear previous results
+    semesterResults.innerHTML = '';
+    finalResult.innerHTML = '';
+
+    // Add semester results
+    results.forEach((result, index) => {
+        const card = document.createElement('div');
+        card.className = 'semester-result-card';
+        card.style.animationDelay = `${index * 0.2}s`;
+        card.innerHTML = `
+            <h3>Semester ${result.semester}</h3>
+            <div class="gpa-value">${result.gpa}</div>
+        `;
+        semesterResults.appendChild(card);
+    });
+
+    // Add final result
+    finalResult.innerHTML = `
+        <h3>${results.length > 1 ? 'CGPA' : 'SGPA'}</h3>
+        <div class="final-gpa">${cgpa}</div>
+    `;
+
+    // Show results container
+    resultsContainer.classList.add('show');
+}
+
+// Add event listeners
+document.querySelector('.calculate-btn').addEventListener('click', calculateResults);
+document.querySelector('.close-results').addEventListener('click', () => {
+    document.querySelector('.results-container').classList.remove('show');
+}); 
