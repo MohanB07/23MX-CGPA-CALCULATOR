@@ -7,6 +7,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles/style.css">
     <link rel="stylesheet" href="/styles/calculate.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
     <canvas id="particleCanvas"></canvas>
@@ -35,12 +37,15 @@
         </button>
     </main>
 
-    <div class="results-container hidden">
+    <div class="results-container">
         <div class="results-overlay"></div>
         <div class="results-content">
             <div class="results-header">
                 <h2>Results</h2>
-                <div class="close-results">×</div>
+                <div class="results-actions">
+                    <button class="download-pdf">Download PDF</button>
+                    <div class="close-results">×</div>
+                </div>
             </div>
             <div class="results-body">
                 <div class="semester-results">

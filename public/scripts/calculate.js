@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const semestersContainer = document.querySelector('.semesters-container');
     const calculateBtn = document.querySelector('.calculate-btn');
 
-    // Course data (you can replace this with your actual course data)
+    // Course data for all semesters
     const courseData = {
         1: [
             { code: '23MX11', name: 'Mathematical Foundations of Computer Science', credits: 4 },
@@ -21,8 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
             { code: '23MX14', name: 'Database Systems', credits: 4 },
             { code: '23MX15', name: 'Web Technologies', credits: 3 },
             { code: '23MX16', name: 'LAB : C programming', credits: 2 },
-	    { code: '23MX17', name: 'LAB : Data Structures', credits: 2 },
-	    { code: '23MX18', name: 'Web Application Development', credits: 2 },
+	        { code: '23MX17', name: 'LAB : Data Structures', credits: 2 },
+	        { code: '23MX18', name: 'Web Application Development', credits: 2 },
 
         ],
         2: [
@@ -36,15 +36,15 @@ document.addEventListener('DOMContentLoaded', () => {
             { code: '23MX28', name: 'Professional Communication and Personality Development', credits: 1 },
 
         ],
-3: [
+        3: [
             { code: '23MX31', name: 'Cloud Computing', credits: 3 },
             { code: '23MX_', name: 'Elective 2', credits: 3 },
             { code: '23MX_', name: 'Elective 3', credits: 3 },
             { code: '23MX_', name: 'Elective 4', credits: 3 },
             { code: '23MX_', name: 'Elective 5', credits: 3 },
             { code: '23MX36', name: 'LAB : Cloud Computing', credits: 2 },
-            { code: '23MX37', name: 'Mini Project', credits: 4 },
-            { code: '23MXM_', name: 'Audit Course', credits: 0 },
+	        { code: '23MX37', name: 'Mini Project', credits: 4 },
+	        { code: '23MXM_', name: 'Audit Course', credits: 0 },
 
         ],
         4: [
@@ -110,6 +110,10 @@ function createSemesterSection(semesterNum, courses) {
     return section;
 }
 
+// Store results for PDF generation
+let lastResults = null;
+let lastCGPA = null;
+
 function calculateResults() {
     const semesterSections = document.querySelectorAll('.semester-section');
     const results = [];
@@ -144,6 +148,9 @@ function calculateResults() {
 }
 
 function displayResults(results, cgpa) {
+    lastResults = results;
+    lastCGPA = cgpa;
+
     const resultsContainer = document.querySelector('.results-container');
     const semesterResults = document.querySelector('.semester-results');
     const finalResult = document.querySelector('.final-result');
@@ -174,8 +181,116 @@ function displayResults(results, cgpa) {
     resultsContainer.classList.add('show');
 }
 
+function generatePDF(results, cgpa) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    // Set document properties
+    doc.setProperties({
+        title: '23MX GPA Calculator Results',
+        subject: 'GPA Calculation Report',
+        author: '23MX',
+        keywords: 'gpa, calculator, results',
+        creator: '23MX GPA Calculator'
+    });
+
+    // Add title
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(20);
+    doc.setTextColor(0, 255, 136);
+    doc.text('23MX GPA Calculator Results', 105, 20, { align: 'center' });
+
+    // Add date
+    doc.setFontSize(10);
+    doc.setTextColor(128, 128, 128);
+    const date = new Date().toLocaleDateString();
+    doc.text(`Generated on: ${date}`, 105, 30, { align: 'center' });
+
+    // Add course details for each semester
+    let yPos = 50;
+    const semesterSections = document.querySelectorAll('.semester-section');
+    
+    semesterSections.forEach((section, index) => {
+        // Add semester header
+        const semesterNum = section.querySelector('.semester-title').textContent;
+        doc.setFontSize(14);
+        doc.setTextColor(0, 255, 136);
+        doc.text(semesterNum, 14, yPos);
+        
+        // Prepare table data
+        const courses = section.querySelectorAll('.course-row');
+        const tableData = Array.from(courses).map(course => [
+            course.querySelector('.course-code').textContent,
+            course.querySelector('.course-name').textContent,
+            course.querySelector('.course-credits').textContent,
+            course.querySelector('.grade-input').value
+        ]);
+
+        // Add course table
+        doc.autoTable({
+            startY: yPos + 5,
+            head: [['Code', 'Course Name', 'Credits', 'Grade']],
+            body: tableData,
+            theme: 'grid',
+            headStyles: {
+                fillColor: [0, 255, 136],
+                textColor: [0, 0, 0],
+                fontStyle: 'bold'
+            },
+            styles: {
+                fontSize: 10,
+                cellPadding: 3
+            },
+            margin: { left: 14 }
+        });
+
+        // Add semester GPA
+        const semesterGPA = results[index].gpa;
+        yPos = doc.lastAutoTable.finalY + 10;
+        doc.setFontSize(12);
+        doc.setTextColor(0, 255, 136);
+        doc.text(`Semester GPA: ${semesterGPA}`, 14, yPos);
+
+        yPos += 20;
+
+        // Add new page if needed
+        if (yPos > 250) {
+            doc.addPage();
+            yPos = 20;
+        }
+    });
+
+    // Add final result
+    doc.setFontSize(16);
+    doc.setTextColor(0, 255, 136);
+    const finalText = results.length > 1 ? 'CGPA' : 'SGPA';
+    doc.text(`Final ${finalText}: ${cgpa}`, 105, yPos, { align: 'center' });
+
+    // Add footer
+    const pageCount = doc.getNumberOfPages();
+    doc.setFontSize(10);
+    doc.setTextColor(128, 128, 128);
+    for (let i = 1; i <= pageCount; i++) {
+        doc.setPage(i);
+        doc.text(
+            `Page ${i} of ${pageCount}`,
+            doc.internal.pageSize.width / 2,
+            doc.internal.pageSize.height - 10,
+            { align: 'center' }
+        );
+    }
+
+    // Save the PDF
+    doc.save('23MX_GPA_Results.pdf');
+}
+
 // Add event listeners
 document.querySelector('.calculate-btn').addEventListener('click', calculateResults);
 document.querySelector('.close-results').addEventListener('click', () => {
     document.querySelector('.results-container').classList.remove('show');
+});
+document.querySelector('.download-pdf').addEventListener('click', () => {
+    if (lastResults && lastCGPA) {
+        generatePDF(lastResults, lastCGPA);
+    }
 }); 

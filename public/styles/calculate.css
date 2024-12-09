@@ -249,6 +249,31 @@
     letter-spacing: 2px;
 }
 
+.results-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.download-pdf {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    border: none;
+    border-radius: 20px;
+    padding: 0.5rem 1.5rem;
+    color: var(--background);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.download-pdf:hover {
+    transform: scale(1.05);
+    box-shadow: var(--neon-glow);
+}
+
 .close-results {
     font-size: 2rem;
     color: var(--primary-color);
@@ -350,6 +375,17 @@
     }
 }
 
+@keyframes sectionFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Mobile Responsive Design */
 @media (max-width: 768px) {
     .calculator-container {
@@ -436,5 +472,14 @@
 
     .final-gpa {
         font-size: 2.5rem;
+    }
+
+    .results-actions {
+        gap: 1rem;
+    }
+
+    .download-pdf {
+        padding: 0.4rem 1rem;
+        font-size: 0.8rem;
     }
 } 
