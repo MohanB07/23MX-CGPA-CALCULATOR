@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semester Selection - 23MX CGPA Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/style.css">
+    <link rel="stylesheet" href="/styles/semesters.css">
+</head>
+<body>
+    <canvas id="particleCanvas"></canvas>
+
+    <header>
+        <div class="title">
+            <h1>Select Semester</h1>
+        </div>
+        <nav class="nav-container">
+            <a href="/" class="back-btn">
+                <span class="back-arrow">←</span>
+                Back
+            </a>
+            <div class="logo-container">
+                <img src="/images/logo.png" alt="Logo">
+            </div>
+        </nav>
+    </header>
+
+    <main class="semester-container">
+        <div class="semester-grid">
+            <div class="semester-card" data-semester="1">
+                <div class="card-content">
+                    <h2>Semester 1</h2>
+                    <div class="selection-indicator"></div>
+                </div>
+            </div>
+            <div class="semester-card" data-semester="2">
+                <div class="card-content">
+                    <h2>Semester 2</h2>
+                    <div class="selection-indicator"></div>
+                </div>
+            </div>
+            <div class="semester-card" data-semester="3">
+                <div class="card-content">
+                    <h2>Semester 3</h2>
+                    <div class="selection-indicator"></div>
+                </div>
+            </div>
+            <div class="semester-card" data-semester="4">
+                <div class="card-content">
+                    <h2>Semester 4</h2>
+                    <div class="selection-indicator"></div>
+                </div>
+            </div>
+        </div>
+        <button class="proceed-btn" disabled>Proceed</button>
+    </main>
+
+    <script src="/scripts/animation.js"></script>
+    <script src="/scripts/semesters.js"></script>
+</body>
+</html> 

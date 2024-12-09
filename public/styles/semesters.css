@@ -1,0 +1,301 @@
+.semester-container {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 100px 2rem 2rem;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.title h1 {
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: 2.5rem;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+}
+
+.semester-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    max-width: 1000px;
+    width: 100%;
+}
+
+.semester-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    height: 200px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.semester-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, 
+        rgba(0, 255, 136, 0) 0%,
+        rgba(0, 255, 136, 0.1) 50%,
+        rgba(0, 255, 136, 0) 100%
+    );
+    transform: translateX(-100%);
+    transition: transform 0.6s ease;
+}
+
+.semester-card:hover::before {
+    transform: translateX(100%);
+}
+
+.semester-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(0, 255, 136, 0.4);
+    box-shadow: var(--neon-glow);
+}
+
+.semester-card.selected {
+    border-color: var(--primary-color);
+    box-shadow: 
+        0 0 20px rgba(0, 255, 136, 0.3),
+        inset 0 0 15px rgba(0, 255, 136, 0.2);
+    animation: selectedPulse 2s ease-in-out infinite;
+}
+
+.semester-card.selected::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg,
+        rgba(0, 255, 136, 0.1),
+        rgba(0, 102, 255, 0.1)
+    );
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        100% calc(100% - 15px),
+        calc(100% - 15px) 100%,
+        0 100%
+    );
+}
+
+.semester-card .card-content {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+}
+
+.semester-card h2 {
+    font-size: 1.8rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    transition: all 0.3s ease;
+}
+
+.semester-card.selected h2 {
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    animation: textGlow 2s ease-in-out infinite;
+}
+
+.semester-card.selected .card-content::before {
+    content: '✓';
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.2rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    opacity: 0;
+    transform: scale(0);
+    animation: checkmarkAppear 0.3s ease forwards;
+}
+
+.nav-container {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    z-index: 100;
+}
+
+.logo-container {
+    width: 150px;
+    height: auto;
+    display: flex;
+    align-items: center;
+}
+
+.logo-container img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.3));
+    animation: logoGlow 2s ease-in-out infinite;
+}
+
+.back-btn {
+    position: fixed;
+    top: 2rem;
+    left: 2rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 500;
+    padding: 0.5rem 1.5rem;
+    border: 1px solid var(--primary-color);
+    border-radius: 25px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 100;
+}
+
+.back-btn:hover {
+    background: var(--primary-color);
+    -webkit-background-clip: initial;
+    background-clip: initial;
+    color: var(--background);
+    box-shadow: var(--neon-glow);
+}
+
+.back-arrow {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+
+.proceed-btn {
+    margin-top: 2rem;
+    padding: 1rem 3rem;
+    font-size: 1.2rem;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    border: none;
+    border-radius: 30px;
+    color: var(--background);
+    cursor: pointer;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.proceed-btn:not([disabled]) {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.proceed-btn:not([disabled]):hover {
+    transform: scale(1.05);
+    box-shadow: var(--neon-glow);
+}
+
+@keyframes selectedPulse {
+    0%, 100% {
+        box-shadow: 
+            0 0 20px rgba(0, 255, 136, 0.3),
+            inset 0 0 15px rgba(0, 255, 136, 0.2);
+    }
+    50% {
+        box-shadow: 
+            0 0 30px rgba(0, 255, 136, 0.4),
+            inset 0 0 25px rgba(0, 255, 136, 0.3);
+    }
+}
+
+@keyframes textGlow {
+    0%, 100% {
+        text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+    }
+    50% {
+        text-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
+    }
+}
+
+@keyframes checkmarkAppear {
+    from {
+        opacity: 0;
+        transform: scale(0) rotate(-45deg);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+    }
+}
+
+@keyframes logoGlow {
+    0%, 100% {
+        filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.3));
+    }
+    50% {
+        filter: drop-shadow(0 0 15px rgba(0, 255, 136, 0.5));
+    }
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+    .semester-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .semester-card {
+        height: 150px;
+    }
+
+    .semester-card h2 {
+        font-size: 1.5rem;
+    }
+
+    .back-btn {
+        top: 1rem;
+        left: 1rem;
+        font-size: 1rem;
+        padding: 0.4rem 1rem;
+    }
+
+    .proceed-btn {
+        padding: 0.8rem 2rem;
+        font-size: 1rem;
+    }
+
+    .logo-container {
+        width: 100px;
+    }
+
+    .title h1 {
+        font-size: 1.8rem;
+    }
+} 
