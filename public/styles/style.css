@@ -46,7 +46,7 @@ header {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    font-size: 3.5rem;
+    font-size: 2rem;
     text-transform: uppercase;
     letter-spacing: 4px;
     text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
