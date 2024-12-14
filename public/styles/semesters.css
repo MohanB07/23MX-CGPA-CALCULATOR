@@ -1,16 +1,35 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
 .semester-container {
     position: relative;
+    margin-top: 0%;
+    margin-bottom: 0%;
     z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center; /* Added this */
     min-height: 100vh;
-    padding: 100px 2rem 2rem;
+    height: 100vh; /* Added fixed height */
+    padding: 0 2rem; /* Removed top padding */
+    overflow: hidden; /* Prevent scrolling */
+    gap: 1rem; /* Add space between elements */
 }
 
 .title {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: -3rem;
 }
 
 .title h1 {
@@ -18,7 +37,7 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    font-size: 2.5rem;
+    font-size: 2rem;
     text-transform: uppercase;
     letter-spacing: 4px;
     text-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
@@ -26,10 +45,13 @@
 
 .semester-grid {
     display: grid;
+    margin-top: 0;
+    margin-bottom: 0%;
     grid-template-columns: repeat(2, 1fr);
-    gap: 2rem;
-    max-width: 1000px;
+    gap: 1rem;
+    max-width: 700px;
     width: 100%;
+    max-height: 40vh; /* Limit the height */
 }
 
 .semester-card {
@@ -37,7 +59,7 @@
     backdrop-filter: blur(10px);
     border-radius: 20px;
     border: 1px solid rgba(0, 255, 136, 0.2);
-    height: 200px;
+    height: 100px; /* Reduced height */
     cursor: pointer;
     position: relative;
     overflow: hidden;
@@ -147,7 +169,7 @@
 }
 
 .logo-container {
-    width: 75px;
+    width: 50px;
     height: auto;
     display: flex;
     align-items: center;
@@ -171,7 +193,7 @@
     text-decoration: none;
     font-size: 1.2rem;
     font-weight: 500;
-    padding: 0.5rem 1.5rem;
+    padding: 0.4rem 1rem;
     border: 1px solid var(--primary-color);
     border-radius: 25px;
     transition: all 0.3s ease;
@@ -197,7 +219,7 @@
 }
 
 .proceed-btn {
-    margin-top: 2rem;
+    margin-top: 1rem;
     padding: 1rem 3rem;
     font-size: 1.2rem;
     background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
@@ -266,15 +288,20 @@
 
 /* Mobile Responsive Design */
 @media (max-width: 768px) {
-    .semester-grid {
-        grid-template-columns: 1fr;
+    .semester-container {
+        padding: 1rem;
         gap: 1rem;
     }
 
-    .semester-card {
-        height: 150px;
+    .semester-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        max-height: 50vh; /* Adjust for mobile */
     }
 
+    .semester-card {
+        height: 100px; /* Further reduced height for mobile */
+    }
     .semester-card h2 {
         font-size: 1.5rem;
     }
@@ -288,7 +315,7 @@
 
     .proceed-btn {
         padding: 0.8rem 2rem;
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 
     .logo-container {
@@ -296,6 +323,6 @@
     }
 
     .title h1 {
-        font-size: 1.8rem;
+        font-size: 1.5rem;
     }
 } 
